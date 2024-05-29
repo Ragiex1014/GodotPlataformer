@@ -1,0 +1,69 @@
+[gd_scene load_steps=11 format=3 uid="uid://13xnjshfr0nu"]
+
+[ext_resource type="PackedScene" uid="uid://desgpqapsbjjh" path="res://scene/enemies/enemybase/enemy_base.tscn" id="1_l0jwl"]
+[ext_resource type="Script" path="res://scene/enemies/eagle/eagle.gd" id="2_0a7mg"]
+[ext_resource type="Texture2D" uid="uid://06sqmdpturr4" path="res://assets/enemies/eagle/eagle-attack.png" id="2_nvvpe"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxx6u"]
+atlas = ExtResource("2_nvvpe")
+region = Rect2(0, 0, 40, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kc4ht"]
+atlas = ExtResource("2_nvvpe")
+region = Rect2(40, 0, 40, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkmpy"]
+atlas = ExtResource("2_nvvpe")
+region = Rect2(80, 0, 40, 41)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v6r2s"]
+atlas = ExtResource("2_nvvpe")
+region = Rect2(120, 0, 40, 41)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7odpo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxx6u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kc4ht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkmpy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v6r2s")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 7.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jvq0t"]
+radius = 5.09902
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nkfq6"]
+
+[node name="Eagle" instance=ExtResource("1_l0jwl")]
+collision_mask = 0
+script = ExtResource("2_0a7mg")
+
+[node name="AnimatedSprite2D" parent="." index="1"]
+scale = Vector2(0.75, 0.75)
+sprite_frames = SubResource("SpriteFrames_7odpo")
+animation = &"fly"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+shape = SubResource("CircleShape2D_jvq0t")
+
+[node name="PlayerDetector" type="RayCast2D" parent="." index="3"]
+target_position = Vector2(0, 200)
+
+[node name="DirectionTimer" type="Timer" parent="." index="4"]
+wait_time = 3.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" index="0"]
+shape = SubResource("CircleShape2D_nkfq6")
+
+[connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
